@@ -54,4 +54,5 @@ CPARALELA/ActividadProcesamientoTextos/
 
 ## Compilacion
 Entrar en la carpeta raiz y ejecutar :javac -d out src/*.java
+
 Luego : java -cp out Main
