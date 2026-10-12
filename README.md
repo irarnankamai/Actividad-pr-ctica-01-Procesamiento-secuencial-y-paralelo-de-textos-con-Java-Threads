@@ -58,9 +58,7 @@ CPARALELA/ActividadProcesamientoTextos/
 
 
 │   └── DonQuijote_100x.txt
-│
-│
-├── .gitignore
+
 
 │
 └── README.md
