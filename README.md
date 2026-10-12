@@ -51,9 +51,11 @@ CPARALELA/ActividadProcesamientoTextos/
 
 │   └── Paralelo.java
 │
+
 ├── datos/
 
 │   ├── DonQuijote.txt
+
 
 │   └── DonQuijote_100x.txt
 │
