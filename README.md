@@ -34,21 +34,32 @@ paralelo utilizando 2 y 4 hilos.
 ## Estructura
 
 CPARALELA/ActividadProcesamientoTextos/
+
 │
+
 ├── src/
+
 │   ├── Main.java
+
 │   ├── Resultado.java
+
 │   ├── ProcesadorTexto.java
+
 │   ├── Secuencial.java
+
 │   ├── ProcesadorThread.java
+
 │   └── Paralelo.java
 │
 ├── datos/
+
 │   ├── DonQuijote.txt
+
 │   └── DonQuijote_100x.txt
 │
 │
 ├── .gitignore
+
 │
 └── README.md
 
