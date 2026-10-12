@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe - Procesamiento de Textos con Java Threads</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f1f4f8;
+            color: #263238;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .contenedor {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 45px;
+            background-color: white;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid #24557a;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #24557a;
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        header p {
+            color: #596875;
+        }
+
+        h2 {
+            color: #24557a;
+            border-bottom: 1px solid #d5dde5;
+            padding-bottom: 8px;
+            margin-top: 35px;
+        }
+
+        h3 {
+            color: #34495e;
+            margin-top: 25px;
+        }
+
+        .datos {
+            text-align: left;
+            background-color: #f6f8fa;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .datos p {
+            margin: 7px 0;
+        }
+
+        .resumen {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .tarjeta {
+            background-color: #edf4fa;
+            border: 1px solid #d7e4ef;
+            border-radius: 8px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .tarjeta h3 {
+            color: #24557a;
+            margin: 0 0 8px;
+            font-size: 16px;
+        }
+
+        .tarjeta p {
+            font-size: 23px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #cfd8e0;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #24557a;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f5f8fa;
+        }
+
+        .nota {
+            background-color: #edf4fa;
+            border-left: 5px solid #24557a;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .correcto {
+            color: #246b45;
+            font-weight: bold;
+        }
+
+        code {
+            background-color: #edf0f3;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+
+        footer {
+            border-top: 1px solid #d5dde5;
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+            color: #65727e;
+            font-size: 14px;
+        }
+
+        @media (max-width: 650px) {
+            .contenedor {
+                margin: 0;
+                padding: 20px;
+            }
+
+            .resumen {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 7px 5px;
+            }
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+
+            .contenedor {
+                margin: 0;
+                padding: 15px;
+                box-shadow: none;
+                max-width: none;
+            }
+
+            h2, h3 {
+                page-break-after: avoid;
+            }
+
+            table {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <header>
+        <h1>Informe de Práctica</h1>
+
+        <h2 style="border: none;">
+            Procesamiento Secuencial y Paralelo de Textos con Java Threads
+        </h2>
+
+        <p>
+            Análisis del texto de Don Quijote de la Mancha mediante
+            programación secuencial y paralela.
+        </p>
+
+        <div class="datos">
+            <p><strong>Estudiante:</strong> Irar Cristian Nankamai Tsuink</p>
+            <p><strong>Asignatura:</strong> Computación Paralela</p>
+            <p><strong>Lenguaje de programación:</strong> Java</p>
+            <p><strong>Entorno de desarrollo:</strong> Kubuntu y Visual Studio Code</p>
+            <p><strong>Técnica utilizada:</strong> Hilos (Java Threads)</p>
+        </div>
+    </header>
+
+    <section>
+        <h2>1. Introducción</h2>
+
+        <p>
+            La computación paralela consiste en distribuir un trabajo entre
+            varias unidades de ejecución para intentar reducir el tiempo
+            necesario para completar una tarea. En Java, los hilos permiten
+            ejecutar diferentes partes de un programa de manera concurrente.
+        </p>
+
+        <p>
+            En esta práctica se desarrolló una aplicación en Java para procesar
+            el texto de Don Quijote de la Mancha. Se implementó una versión
+            secuencial y otra paralela que distribuye el procesamiento entre
+            dos y cuatro hilos. Posteriormente, se compararon los resultados
+            y los tiempos de ejecución utilizando el documento original y
+            una versión ampliada cien veces.
+        </p>
+    </section>
+
+    <section>
+        <h2>2. Objetivos</h2>
+
+        <h3>2.1. Objetivo general</h3>
+
+        <p>
+            Implementar y evaluar un programa de procesamiento de textos
+            secuencial y paralelo utilizando hilos en Java, comparando
+            la exactitud de los resultados y el rendimiento de las
+            diferentes configuraciones.
+        </p>
+
+        <h3>2.2. Objetivos específicos</h3>
+
+        <ul>
+            <li>Leer y procesar un documento de texto.</li>
+            <li>Contar el total de palabras del documento.</li>
+            <li>Contabilizar las apariciones de la palabra «Quijote».</li>
+            <li>Contar las palabras que contienen la secuencia «ción».</li>
+            <li>Distribuir el trabajo entre dos y cuatro hilos.</li>
+            <li>Medir y comparar los tiempos de ejecución.</li>
+            <li>Verificar que los resultados paralelos coincidan con los secuenciales.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>3. Herramientas y tecnologías</h2>
+
+        <ul>
+            <li><strong>Java:</strong> lenguaje utilizado para desarrollar el programa.</li>
+            <li><strong>Thread:</strong> clase utilizada para implementar los hilos de procesamiento.</li>
+            <li><strong>System.nanoTime():</strong> método utilizado para medir los tiempos de ejecución.</li>
+            <li><strong>Files:</strong> clase utilizada para leer y escribir archivos de texto.</li>
+            <li><strong>Kubuntu:</strong> sistema operativo empleado para ejecutar el programa.</li>
+            <li><strong>Terminal:</strong> utilizada para compilar y ejecutar el proyecto.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>4. Metodología</h2>
+
+        <p>El desarrollo de la práctica se realizó mediante las siguientes etapas:</p>
+
+        <ol>
+            <li>
+                Se cargó el archivo original DonQuijote.txt, con
+                1.199.961 caracteres.
+            </li>
+
+            <li>
+                Se ejecutó el procesamiento secuencial para obtener los
+                resultados de referencia.
+            </li>
+
+            <li>
+                Se creó un segundo archivo repitiendo el contenido original
+                cien veces, con un total de 119.996.200 caracteres.
+            </li>
+
+            <li>
+                Se ejecutó el procesamiento paralelo con dos y cuatro hilos.
+            </li>
+
+            <li>
+                Se realizaron dos ejecuciones de calentamiento y cinco
+                mediciones cronometradas por configuración. Se utilizó
+                System.nanoTime() para medir el tiempo y se calculó el
+                promedio de las mediciones.
+            </li>
+
+            <li>
+                Se calculó el speedup de cada configuración paralela
+                respecto al procesamiento secuencial.
+            </li>
+
+            <li>
+                Finalmente, se compararon los resultados de las tres
+                métricas para verificar la consistencia de los resultados.
+            </li>
+        </ol>
+
+        <div class="nota">
+            <strong>Fórmula del speedup:</strong>
+
+            <p>
+                Speedup = Tiempo secuencial promedio / Tiempo paralelo promedio
+            </p>
+
+            <p>
+                Un speedup superior a 1 significa que la ejecución paralela
+                fue más rápida que la secuencial en la prueba correspondiente.
+            </p>
+        </div>
+    </section>
+    <section>
+    <h2>5. Características del equipo utilizado</h2>
+
+    <p>
+        Para desarrollar y ejecutar las pruebas de procesamiento secuencial
+        y paralelo se utilizó un computador portátil con sistema operativo
+        Kubuntu Linux. A continuación, se presentan sus características:
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Característica</th>
+                <th>Especificación</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Procesador</td>
+                <td>Intel Core i5-1035G1 @ 1.00 GHz</td>
+            </tr>
+
+            <tr>
+                <td>Arquitectura</td>
+                <td>x86_64 (64 bits)</td>
+            </tr>
+
+            <tr>
+                <td>Núcleos físicos</td>
+                <td>4</td>
+            </tr>
+
+            <tr>
+                <td>Procesadores lógicos</td>
+                <td>8</td>
+            </tr>
+
+            <tr>
+                <td>Memoria RAM instalada</td>
+                <td>7,5 GiB (aproximadamente 8 GB)</td>
+            </tr>
+
+            <tr>
+                <td>Memoria disponible durante la consulta</td>
+                <td>2,6 GiB</td>
+            </tr>
+
+            <tr>
+                <td>Gráficos integrados</td>
+                <td>Intel Iris Plus Graphics G1</td>
+            </tr>
+
+            <tr>
+                <td>Sistema operativo</td>
+                <td>Kubuntu Linux</td>
+            </tr>
+
+            <tr>
+                <td>Lenguaje de programación</td>
+                <td>Java</td>
+            </tr>
+
+            <tr>
+                <td>Entorno de desarrollo</td>
+                <td>Visual Studio Code y terminal</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        El procesador dispone de cuatro núcleos físicos y ocho procesadores
+        lógicos. Estas características permiten al sistema operativo
+        gestionar varios hilos de ejecución. Para esta práctica se
+        compararon las ejecuciones con un hilo, dos hilos y cuatro hilos.
+    </p>
+
+    <p>
+        La memoria RAM disponible puede variar según los programas que
+        estén ejecutándose. Por este motivo, los resultados de rendimiento
+        corresponden a las condiciones existentes durante las pruebas y
+        podrían cambiar en otras ejecuciones.
+    </p>
+</section>
+
+    <section>
+        <h2>5.1 Resultados del procesamiento</h2>
+
+        <p>
+            En primer lugar, se procesó el documento original y se obtuvieron
+            los siguientes resultados:
+        </p>
+
+        <div class="resumen">
+            <div class="tarjeta">
+                <h3>Total de palabras</h3>
+                <p>214.871</p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Apariciones de «Quijote»</h3>
+                <p>1.082</p>
+            </div>
+
+            <div class="tarjeta">
+                <h3>Palabras con «ción»</h3>
+                <p>564</p>
+            </div>
+        </div>
+
+        <h3>5.2. Comparación del conteo</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Métrica</th>
+                    <th>Documento original</th>
+                    <th>Documento ampliado 100x</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Caracteres</td>
+                    <td>1.199.961</td>
+                    <td>119.996.200</td>
+                </tr>
+
+                <tr>
+                    <td>Total de palabras</td>
+                    <td>214.871</td>
+                    <td>21.487.100</td>
+                </tr>
+
+                <tr>
+                    <td>Apariciones de «Quijote»</td>
+                    <td>1.082</td>
+                    <td>108.200</td>
+                </tr>
+
+                <tr>
+                    <td>Palabras que contienen «ción»</td>
+                    <td>564</td>
+                    <td>56.400</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            Los conteos del documento ampliado son cien veces los del
+            documento original, lo cual coincide con el procedimiento
+            utilizado para generar el archivo ampliado.
+        </p>
+    </section>
+
+    <section>
+        <h2>6. Comparación de tiempos de ejecución</h2>
+
+        <h3>6.1. Documento original</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Configuración</th>
+                    <th>Tiempo promedio (ms)</th>
+                    <th>Speedup</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>1 hilo (secuencial)</td>
+                    <td>28,2220</td>
+                    <td>1,0000</td>
+                </tr>
+
+                <tr>
+                    <td>2 hilos</td>
+                    <td>15,4159</td>
+                    <td>1,8307</td>
+                </tr>
+
+                <tr>
+                    <td>4 hilos</td>
+                    <td>16,6680</td>
+                    <td>1,6932</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            En el documento original, la configuración de dos hilos obtuvo
+            el menor tiempo promedio, con 15,4159 milisegundos. Su speedup
+            fue de 1,8307 respecto al procesamiento secuencial. La
+            configuración de cuatro hilos también fue más rápida que la
+            secuencial, aunque no superó el rendimiento de dos hilos.
+        </p>
+
+        <h3>6.2. Documento ampliado cien veces</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Configuración</th>
+                    <th>Tiempo promedio (ms)</th>
+                    <th>Speedup</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>1 hilo (secuencial)</td>
+                    <td>2.056,4523</td>
+                    <td>1,0000</td>
+                </tr>
+
+                <tr>
+                    <td>2 hilos</td>
+                    <td>1.143,6197</td>
+                    <td>1,7982</td>
+                </tr>
+
+                <tr>
+                    <td>4 hilos</td>
+                    <td>987,4557</td>
+                    <td>2,0826</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            En el documento ampliado, cuatro hilos obtuvieron el mejor
+            rendimiento, con un tiempo promedio de 987,4557 milisegundos.
+            El speedup fue de 2,0826, lo que significa que la ejecución
+            paralela fue aproximadamente 2,08 veces más rápida que la
+            secuencial en esta prueba.
+        </p>
+    </section>
+
+    <section>
+        <h2>7. Análisis de resultados</h2>
+
+        <p>
+            Los resultados muestran que el procesamiento paralelo redujo
+            el tiempo de ejecución en comparación con el procesamiento
+            secuencial. Sin embargo, la configuración más eficiente
+            dependió del tamaño del documento.
+        </p>
+
+        <p>
+            Para el documento original, dos hilos obtuvieron el mejor
+            tiempo. En cambio, para el documento ampliado cien veces,
+            cuatro hilos consiguieron el menor tiempo de ejecución.
+            Esto sugiere que un volumen mayor de datos puede permitir
+            aprovechar mejor la distribución del trabajo entre varios hilos.
+        </p>
+
+        <p>
+            El rendimiento no aumenta necesariamente de forma proporcional
+            al número de hilos. La creación y coordinación de hilos,
+            la distribución del texto y la planificación del sistema
+            operativo también influyen en el tiempo total.
+        </p>
+
+        <div class="nota">
+            <strong>Mejor resultado observado:</strong>
+            el procesamiento del texto ampliado con cuatro hilos obtuvo
+            un speedup de 2,0826 y un tiempo promedio de 987,4557 ms,
+            frente a 2.056,4523 ms del procesamiento secuencial.
+        </div>
+
+        <section>
+    <h2>Preguntas de análisis</h2>
+
+    <h3>1. ¿Qué diferencias se observan entre los tiempos de ejecución secuencial y paralela?</h3>
+
+    <p>
+        El procesamiento paralelo fue más rápido que el secuencial en
+        las dos pruebas realizadas. Para el documento original, el
+        procesamiento secuencial tardó 28,2220 ms, mientras que con
+        dos hilos tardó 15,4159 ms y con cuatro hilos 16,6680 ms.
+        Para el documento ampliado, el tiempo secuencial fue de
+        2056,4523 ms, mientras que con dos hilos fue de 1143,6197 ms
+        y con cuatro hilos de 987,4557 ms.
+    </p>
+
+    <h3>2. ¿Cómo influye el número de hilos en el rendimiento?</h3>
+
+    <p>
+        El número de hilos influye en la distribución del trabajo y
+        en el tiempo de ejecución. En el documento original, dos hilos
+        consiguieron el mejor resultado. En el documento ampliado,
+        cuatro hilos fueron más rápidos que dos. Sin embargo, aumentar
+        los hilos no garantiza una mejora proporcional, porque también
+        existen costos de coordinación y planificación.
+    </p>
+
+    <h3>3. ¿Qué sucede al incrementar el tamaño del documento?</h3>
+
+    <p>
+        Al aumentar el documento cien veces, también aumentó
+        considerablemente el tiempo de procesamiento. La ejecución
+        secuencial pasó de 28,2220 ms a 2056,4523 ms. En el documento
+        ampliado se observó una ventaja del procesamiento con cuatro
+        hilos, que obtuvo un tiempo promedio de 987,4557 ms. Un volumen
+        mayor de datos ofrece más trabajo que puede distribuirse entre
+        los hilos, aunque también requiere más tiempo de procesamiento.
+    </p>
+
+    <h3>4. ¿El procesamiento paralelo siempre es más rápido? Justifique su respuesta.</h3>
+
+    <p>
+        No. El procesamiento paralelo no siempre es más rápido, porque
+        crear y coordinar hilos tiene un costo adicional. En esta práctica,
+        cuatro hilos no fueron la configuración más rápida para el
+        documento original; dos hilos obtuvieron un mejor tiempo.
+        En cambio, para el documento ampliado, cuatro hilos lograron
+        el mejor resultado. Por lo tanto, la ventaja del paralelismo
+        depende del tamaño de los datos, del número de hilos y de los
+        recursos del equipo.
+    </p>
+</section>
+    </section>
+
+    <section>
+        <h2>8. Verificación de resultados</h2>
+
+        <p>
+            El programa comparó los resultados del procesamiento paralelo
+            con los resultados de referencia obtenidos secuencialmente.
+            Las comprobaciones finalizaron correctamente en ambos tamaños
+            de documento.
+        </p>
+
+        <ul>
+            <li class="correcto">
+                Documento original: coinciden los resultados secuenciales
+                y los de dos hilos.
+            </li>
+
+            <li class="correcto">
+                Documento original: coinciden los resultados secuenciales
+                y los de cuatro hilos.
+            </li>
+
+            <li class="correcto">
+                Documento ampliado 100x: coinciden los resultados
+                secuenciales y los de dos hilos.
+            </li>
+
+            <li class="correcto">
+                Documento ampliado 100x: coinciden los resultados
+                secuenciales y los de cuatro hilos.
+            </li>
+        </ul>
+
+        <p>
+            Por tanto, las pruebas realizadas confirman que las tres
+            métricas calculadas por el programa coinciden entre las
+            versiones secuencial y paralela para los documentos evaluados.
+        </p>
+    </section>
+
+    <section>
+        <h2>9. Comandos de compilación y ejecución</h2>
+
+        <p>
+            Para compilar el proyecto desde su directorio principal,
+            se utilizó el siguiente comando:
+        </p>
+
+        <p><code>javac -d out src/*.java</code></p>
+
+        <p>Para ejecutar el programa:</p>
+
+        <p><code>java -cp out Main</code></p>
+
+        <p>
+            El archivo de entrada debe estar ubicado en
+            <code>datos/DonQuijote.txt</code>.
+        </p>
+    </section>
+
+    <section>
+        <h2>10. Conclusiones</h2>
+
+        <p>
+            Se implementó un programa en Java para procesar el texto de
+            Don Quijote de la Mancha mediante una ejecución secuencial
+            y ejecuciones paralelas con dos y cuatro hilos. Las pruebas
+            confirmaron que los resultados de conteo coincidieron en
+            todas las configuraciones evaluadas. En cuanto al rendimiento,
+            dos hilos obtuvieron el mejor tiempo para el documento original,
+            mientras que cuatro hilos lograron el mejor resultado para el
+            documento ampliado cien veces, con un speedup de 2,0826.
+            Se concluye que la programación paralela puede reducir el
+            tiempo de procesamiento, aunque sus beneficios dependen del
+            volumen de datos y del costo de coordinación de los hilos.
+        </p>
+    </section>
+    <section>
+    <h2>11. Repositorio del proyecto en GitHub</h2>
+
+    <p>
+        El código fuente de la práctica está disponible en GitHub.
+        El repositorio contiene la implementación del procesamiento
+        secuencial y paralelo, así como los archivos necesarios para
+        compilar y ejecutar el programa.
+    </p>
+
+    <p>
+        <strong>Repositorio:</strong>
+        <a href="https://github.com/irarnankamai/Actividad-pr-ctica-01-Procesamiento-secuencial-y-paralelo-de-textos-con-Java-Threads.git"
+           target="_blank"
+           rel="noopener noreferrer">
+            Consultar el código fuente en GitHub
+        </a>
+    </p>
+</section>
+    <footer>
+        <p>
+            Informe académico: Procesamiento Secuencial y Paralelo de
+            Textos con Java Threads.
+        </p>
+
+        <p>
+            Los tiempos corresponden a una ejecución concreta y pueden
+            variar en pruebas posteriores.
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>
